@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f1115">
+  <meta name="description" content="Pide tus favoritos de comida rápida directo por WhatsApp.">
+  <title>Menú digital | La Esquina Burger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true">L</span>
+      <span class="brand-name" data-business-name>La Esquina <span>Burger</span></span>
+    </a>
+    <a class="header-order-link" href="#menu">Ver menú <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="business-name">
+      <div class="hero-content">
+        <div class="delivery-pill"><span class="status-dot"></span><span data-delivery-promise>Domicilios en 30 min</span></div>
+        <p class="eyebrow">HECHO AL MOMENTO, HECHO PARA TI</p>
+        <h1 id="business-name" data-business-name>La Esquina <span>Burger</span></h1>
+        <p class="hero-description" data-tagline>Hamburguesas brutales, ingredientes frescos y ese sabor que siempre provoca.</p>
+        <div class="hero-details">
+          <span><span class="detail-icon" aria-hidden="true">⌖</span><span data-address>Cra. 7 # 45-18, Bogotá</span></span>
+          <span><span class="detail-icon" aria-hidden="true">◷</span><span data-hours>Hoy · 12:00 m – 10:00 p. m.</span></span>
+        </div>
+        <a class="button button-primary hero-button" href="#menu">Pedir ahora <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-index" aria-hidden="true"><span>01</span> / FUEGO, PAN Y SABOR</div>
+    </section>
+
+    <section class="menu-section" id="menu" aria-labelledby="menu-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">NUESTRO MENÚ</p>
+          <h2 id="menu-heading">Se te va a antojar <span>todo.</span></h2>
+        </div>
+        <p class="menu-note">Preparado al momento, siempre.</p>
+      </div>
+      <nav class="category-list" aria-label="Filtrar productos" id="category-list"></nav>
+      <div class="product-grid" id="product-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#" aria-label="Volver al inicio">
+      <span class="brand-mark" aria-hidden="true">L</span>
+      <span class="brand-name" data-business-name>La Esquina <span>Burger</span></span>
+    </a>
+    <p>Demo diseñada por <a href="https://wa.me/573134510500" target="_blank" rel="noopener noreferrer">NexoWeb JM Studios <span aria-hidden="true">↗</span></a></p>
+  </footer>
+
+  <button class="cart-bar" id="cart-bar" type="button" aria-label="Ver pedido" hidden>
+    <span class="cart-bar-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.5a2 2 0 0 0 1.9-1.4L21 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.2" fill="currentColor"/><circle cx="18" cy="20" r="1.2" fill="currentColor"/></svg>
+    </span>
+    <span class="cart-bar-label"><strong>Tu pedido</strong><small id="cart-count">0 productos</small></span>
+    <span class="cart-bar-total" id="cart-total">$0</span>
+    <span class="cart-bar-arrow" aria-hidden="true">→</span>
+  </button>
+
+  <div class="modal-backdrop" id="cart-backdrop" hidden>
+    <section class="cart-modal" id="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-describedby="cart-description">
+      <div class="modal-handle" aria-hidden="true"></div>
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">CASI LISTO</p>
+          <h2 id="cart-title">Tu pedido <span>🛍</span></h2>
+        </div>
+        <button class="icon-button" id="close-cart" type="button" aria-label="Cerrar pedido">×</button>
+      </div>
+      <p class="sr-only" id="cart-description">Revisa tus productos, completa tus datos y envía el pedido por WhatsApp.</p>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-empty" id="cart-empty" hidden>
+        <span aria-hidden="true">🍔</span>
+        <p>Tu carrito está esperando algo rico.</p>
+        <button class="text-button" id="back-to-menu" type="button">Volver al menú</button>
+      </div>
+      <form class="checkout-form" id="checkout-form" novalidate>
+        <label class="field-label" for="customer-name">¿A nombre de quién?</label>
+        <input id="customer-name" name="name" type="text" autocomplete="name" placeholder="Tu nombre" required maxlength="80">
+        <label class="field-label" for="delivery-type">¿Cómo lo recibes?</label>
+        <select id="delivery-type" name="deliveryType">
+          <option value="delivery">Domicilio</option>
+          <option value="pickup">Recoger en el local</option>
+        </select>
+        <div id="address-field">
+          <label class="field-label" for="customer-address">Dirección de entrega</label>
+          <input id="customer-address" name="address" type="text" autocomplete="street-address" placeholder="Calle, número y barrio" maxlength="160">
+        </div>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <div class="order-total-row"><span>Total del pedido</span><strong id="modal-total">$0</strong></div>
+        <button class="button whatsapp-button" id="whatsapp-submit" type="submit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7a11.8 11.8 0 0 0 5.4 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.1-1.2-6.1-3.5-8.3ZM12.1 21.6c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.9 1 1-3.8-.3-.4a9.7 9.7 0 0 1-1.5-5.1c0-5.4 4.5-9.9 10-9.9 2.6 0 5.1 1 7 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.5 9.8-9.9 9.8Zm5.5-7.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.6-1.8-1.8-2.1-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6-.1-.2-.7-1.7-.9-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1-1.1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z"/></svg>
+          <span>Enviar pedido por WhatsApp</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+        <p class="checkout-note">Confirmarás los detalles directamente por WhatsApp.</p>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
