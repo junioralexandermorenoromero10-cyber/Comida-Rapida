@@ -9,52 +9,119 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&amp;fit=crop&amp;w=2000&amp;q=85">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#" aria-label="Ir al inicio">
+    <a class="brand" href="#top" aria-label="Ir al inicio">
       <span class="brand-mark" aria-hidden="true">L</span>
       <span class="brand-name" data-business-name>La Esquina <span>Burger</span></span>
     </a>
-    <a class="header-order-link" href="#menu">Ver menú <span aria-hidden="true">↗</span></a>
+    <nav class="header-links" aria-label="Navegación principal">
+      <a class="header-story-link" href="#la-esquina">Nuestra cocina</a>
+      <a class="header-order-link" href="#menu">Explorar menú <span aria-hidden="true">↗</span></a>
+    </nav>
   </header>
 
-  <main>
-    <section class="hero" aria-labelledby="business-name">
-      <div class="hero-content">
-        <div class="delivery-pill"><span class="status-dot"></span><span data-delivery-promise>Domicilios en 30 min</span></div>
-        <p class="eyebrow">HECHO AL MOMENTO, HECHO PARA TI</p>
-        <h1 id="business-name" data-business-name>La Esquina <span>Burger</span></h1>
-        <p class="hero-description" data-tagline>Hamburguesas brutales, ingredientes frescos y ese sabor que siempre provoca.</p>
-        <div class="hero-details">
-          <span><span class="detail-icon" aria-hidden="true">⌖</span><span data-address>Cra. 7 # 45-18, Bogotá</span></span>
-          <span><span class="detail-icon" aria-hidden="true">◷</span><span data-hours>Hoy · 12:00 m – 10:00 p. m.</span></span>
-        </div>
-        <a class="button button-primary hero-button" href="#menu">Pedir ahora <span aria-hidden="true">↓</span></a>
+  <main id="top">
+    <section class="hero" aria-labelledby="business-name" data-enter>
+      <div class="hero-photo-wrap">
+        <img
+          class="hero-photo"
+          src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&amp;fit=crop&amp;w=2000&amp;q=85"
+          alt="Hamburguesa recién preparada con queso, vegetales frescos y pan dorado"
+          width="2000"
+          height="1100"
+          fetchpriority="high"
+          data-source="stand-in"
+          data-subject="Hamburguesa de la casa">
       </div>
-      <div class="hero-index" aria-hidden="true"><span>01</span> / FUEGO, PAN Y SABOR</div>
+      <div class="hero-content">
+        <div class="hero-heading">
+          <div class="delivery-pill"><span class="status-dot"></span><span data-delivery-promise>Domicilios en 30 min</span></div>
+          <p class="eyebrow">ANTOJO RESUELTO, PLAN PERFECTO</p>
+          <h1 id="business-name" data-business-name>La Esquina <span>Burger</span></h1>
+        </div>
+        <div class="hero-description-block">
+          <p class="hero-description" data-tagline>Hamburguesas brutales, ingredientes frescos y ese sabor que siempre provoca.</p>
+          <div class="hero-details">
+            <span><span class="detail-icon" aria-hidden="true">⌖</span><span data-address>Cra. 7 # 45-18, Bogotá</span></span>
+            <span><span class="detail-icon" aria-hidden="true">◷</span><span data-hours>Hoy · 12:00 m – 10:00 p. m.</span></span>
+          </div>
+          <a class="button button-primary hero-button" href="#menu">Explorar el menú <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
     </section>
 
     <section class="menu-section" id="menu" aria-labelledby="menu-heading">
       <div class="section-heading">
-        <div>
+        <div data-reveal>
           <p class="eyebrow">NUESTRO MENÚ</p>
-          <h2 id="menu-heading">Se te va a antojar <span>todo.</span></h2>
+          <h2 id="menu-heading">Buenos planes<br>empiezan con <span>hambre.</span></h2>
         </div>
-        <p class="menu-note">Preparado al momento, siempre.</p>
+        <p class="menu-note" data-reveal>Hecho al momento.<br>Disfrutado sin afán.</p>
       </div>
-      <nav class="category-list" aria-label="Filtrar productos" id="category-list"></nav>
-      <div class="product-grid" id="product-grid" aria-live="polite"></div>
+      <nav class="category-list" aria-label="Filtrar productos" id="category-list" data-reveal></nav>
+      <div class="product-grid" id="product-grid" aria-live="polite" data-reveal></div>
+    </section>
+
+    <section class="story-section" id="la-esquina" aria-labelledby="story-heading" data-photo-story>
+      <div class="story-stage">
+        <div class="story-heading" data-reveal>
+          <p class="eyebrow">EL ANTOJO, EN TRES ACTOS</p>
+          <h2 id="story-heading">Así se arma<br>un <span>buen momento.</span></h2>
+          <p>Del primer crujido al último mordisco: aquí cada parada cuenta.</p>
+        </div>
+        <div class="story-photos" aria-label="Nuestra cocina en tres momentos">
+          <article class="story-chapter is-active" data-story-chapter>
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&amp;fit=crop&amp;w=1500&amp;q=82"
+                 alt="Papas fritas doradas y crocantes, recién servidas"
+                 width="1500" height="1000" loading="lazy" decoding="async"
+                 data-source="stand-in" data-subject="Papas fritas recién servidas">
+            <div class="story-caption">
+              <span class="story-count">01 <i>/ 03</i></span>
+              <h3>Papas que crujen.</h3>
+              <p>Doraditas al punto, listas para compartir… o no.</p>
+            </div>
+          </article>
+          <article class="story-chapter" data-story-chapter>
+            <img src="https://images.unsplash.com/photo-1554433607-66b5efe9d304?auto=format&amp;fit=crop&amp;w=1500&amp;q=82"
+                 alt="Perro caliente preparado con vegetales y salsas"
+                 width="1500" height="1000" loading="lazy" decoding="async"
+                 data-source="stand-in" data-subject="Perro caliente con salsas">
+            <div class="story-caption">
+              <span class="story-count">02 <i>/ 03</i></span>
+              <h3>El perro con todo.</h3>
+              <p>Tocineta crocante, ripio y las salsas de la casa.</p>
+            </div>
+          </article>
+          <article class="story-chapter" data-story-chapter>
+            <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&amp;fit=crop&amp;w=1500&amp;q=82"
+                 alt="Hamburguesa con pan suave, carne y vegetales frescos"
+                 width="1500" height="1000" loading="lazy" decoding="async"
+                 data-source="stand-in" data-subject="Hamburguesa artesanal">
+            <div class="story-caption">
+              <span class="story-count">03 <i>/ 03</i></span>
+              <h3>Y esa primera mordida.</h3>
+              <p>Pan dorado, carne a la parrilla y cero ganas de compartir.</p>
+            </div>
+          </article>
+        </div>
+        <div class="story-progress" aria-hidden="true"><span id="story-progress"></span></div>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <a class="brand footer-brand" href="#" aria-label="Volver al inicio">
+    <a class="brand footer-brand" href="#top" aria-label="Volver al inicio">
       <span class="brand-mark" aria-hidden="true">L</span>
       <span class="brand-name" data-business-name>La Esquina <span>Burger</span></span>
+    </a>
+    <a class="footer-location" id="location-link" href="https://www.google.com/maps/search/?api=1&amp;query=Bogot%C3%A1" target="_blank" rel="noopener noreferrer">
+      <span data-address>Cra. 7 # 45-18, Bogotá</span><span aria-hidden="true">↗</span>
     </a>
     <p>Demo diseñada por <a href="https://wa.me/573134510500" target="_blank" rel="noopener noreferrer">NexoWeb JM Studios <span aria-hidden="true">↗</span></a></p>
   </footer>

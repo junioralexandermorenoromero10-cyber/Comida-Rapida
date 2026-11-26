@@ -80,6 +80,7 @@ const addressField = document.querySelector("#address-field");
 const formError = document.querySelector("#form-error");
 let activeCategory = "Todos";
 let previouslyFocusedElement = null;
+let revealObserver = null;
 
 function formatPrice(value) {
   return currency.format(value).replace(/\u00a0/g, "");
@@ -97,7 +98,11 @@ function renderBusinessInfo() {
   document.querySelector("[data-tagline]").textContent = CONFIG.tagline;
   document.querySelector("[data-delivery-promise]").textContent = CONFIG.deliveryPromise;
   document.querySelector("[data-hours]").textContent = CONFIG.hours;
-  document.querySelector("[data-address]").textContent = CONFIG.address;
+  document.querySelectorAll("[data-address]").forEach((element) => {
+    element.textContent = CONFIG.address;
+  });
+  document.querySelector("#location-link").href =
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONFIG.address)}`;
   document.title = `Menú digital | ${CONFIG.businessName}`;
 }
 
@@ -121,6 +126,7 @@ function renderCategories() {
 function createProductCard(product, index) {
   const card = document.createElement("article");
   card.className = "product-card";
+  card.setAttribute("data-reveal", "");
   card.style.animationDelay = `${Math.min(index, 6) * 35}ms`;
 
   const imageWrap = document.createElement("div");
@@ -169,8 +175,99 @@ function renderProducts() {
     activeCategory === "Todos" || product.category === activeCategory
   ));
   visibleProducts.forEach((product, index) => {
-    productGrid.append(createProductCard(product, index));
+    const card = createProductCard(product, index);
+    productGrid.append(card);
+    if (revealObserver) revealObserver.observe(card);
   });
+}
+
+function setupRevealAnimations() {
+  const revealItems = document.querySelectorAll("[data-reveal], .product-card");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    revealItems.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  document.documentElement.classList.add("motion-ready");
+  revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -32px 0px" });
+  revealItems.forEach((element) => revealObserver.observe(element));
+}
+
+function setupPhotoStory() {
+  const section = document.querySelector("[data-photo-story]");
+  const chapters = Array.from(section.querySelectorAll("[data-story-chapter]"));
+  const progressBar = document.querySelector("#story-progress");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (!chapters.length) return;
+
+  section.style.setProperty("--story-count", chapters.length);
+  let isLive = false;
+  let animationFrame = 0;
+  let lastActiveIndex = -1;
+
+  function updateStory() {
+    animationFrame = 0;
+    if (!isLive) return;
+    const scrollDistance = Math.max(1, section.offsetHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, -section.getBoundingClientRect().top / scrollDistance));
+    const activeIndex = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
+
+    if (activeIndex !== lastActiveIndex) {
+      chapters.forEach((chapter, index) => {
+        const isActive = index === activeIndex;
+        chapter.classList.toggle("is-active", isActive);
+        chapter.setAttribute("aria-hidden", String(!isActive));
+      });
+      lastActiveIndex = activeIndex;
+    }
+
+    progressBar.style.transform = `scaleX(${progress})`;
+  }
+
+  function scheduleUpdate() {
+    if (!isLive || animationFrame) return;
+    animationFrame = window.requestAnimationFrame(updateStory);
+  }
+
+  function setStoryMode(shouldRun) {
+    if (isLive === shouldRun) return;
+    isLive = shouldRun;
+    section.classList.toggle("is-live", isLive);
+
+    if (isLive) {
+      window.addEventListener("scroll", scheduleUpdate, { passive: true });
+      scheduleUpdate();
+    } else {
+      window.removeEventListener("scroll", scheduleUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      lastActiveIndex = -1;
+      progressBar.style.removeProperty("transform");
+      chapters.forEach((chapter) => {
+        chapter.classList.remove("is-active");
+        chapter.removeAttribute("aria-hidden");
+      });
+    }
+  }
+
+  function syncStoryMode() {
+    setStoryMode(!reduceMotion.matches && window.innerHeight >= 600);
+  }
+
+  window.addEventListener("resize", syncStoryMode);
+  reduceMotion.addEventListener("change", syncStoryMode);
+  syncStoryMode();
 }
 
 function getCartCount() {
@@ -315,6 +412,8 @@ renderCategories();
 renderProducts();
 renderCart();
 updateDeliveryFields();
+setupRevealAnimations();
+setupPhotoStory();
 
 cartBar.addEventListener("click", openCart);
 document.querySelector("#close-cart").addEventListener("click", closeCart);
